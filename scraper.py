@@ -3,6 +3,7 @@ import json
 from bs4 import BeautifulSoup
 
 discogs_username = "cakerste"
+conditions = ['Mint (M)', 'Near Mint (NM or M-)']
 
 def get_ids():
     ids = []
@@ -25,10 +26,28 @@ def get_lowest_price(html):
     price = parsed_html.find('span', class_='price')
     return price.text
 
+def send_notification(album_info):
+    print(album_info)
+
+def find_condition(html):
+    for condition in conditions:
+        if condition in html:
+            return condition
+
+def get_album_info(html):
+    album_info = {}
+    parsed_html = BeautifulSoup(html)
+    album_info['price'] = parsed_html.find('span', class_='price').text
+    album_info['release_name'] = parsed_html.find('a', class_='item_description_title').text
+    album_info['media_condition'] = find_condition(parsed_html.find('p', class_='item_condition').find('span', class_='').text)
+    album_info['sleeve_condition'] = parsed_html.find('span', class_='item_sleeve_condition').text
+    return album_info
+
 if __name__ == '__main__':
     ids = get_ids()
     for album_id in ids:
         listing = get_cheapest_listings(album_id)
+        print(get_album_info(listing))
         price = get_lowest_price(listing)
         price_as_float = float(price[1:])
         if price_as_float < 30:
