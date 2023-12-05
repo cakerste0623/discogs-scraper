@@ -31,7 +31,7 @@ def find_condition(html):
 
 def get_album_info(html):
     album_info = {}
-    parsed_html = BeautifulSoup(html)
+    parsed_html = BeautifulSoup(html, 'html.parser')
     album_info['price'] = parsed_html.find('span', class_='price').text
     album_info['release_name'] = parsed_html.find('a', class_='item_description_title').text
     album_info['media_condition'] = find_condition(parsed_html.find('p', class_='item_condition').find('span', class_='').text)
