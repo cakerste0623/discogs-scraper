@@ -21,11 +21,6 @@ def get_cheapest_listings(id):
                         })
     return page.text
 
-def get_lowest_price(html):
-    parsed_html = BeautifulSoup(html)
-    price = parsed_html.find('span', class_='price')
-    return price.text
-
 def send_notification(album_info):
     print(album_info)
 
@@ -47,8 +42,7 @@ if __name__ == '__main__':
     ids = get_ids()
     for album_id in ids:
         listing = get_cheapest_listings(album_id)
-        print(get_album_info(listing))
-        price = get_lowest_price(listing)
-        price_as_float = float(price[1:])
+        album_info = get_album_info(listing)
+        price_as_float = float(album_info['price'][1:])
         if price_as_float < 30:
-            print(price_as_float)
+            send_notification(album_info)
