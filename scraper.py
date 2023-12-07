@@ -42,14 +42,21 @@ def get_album_info(html):
     album_info['sleeve_condition'] = parsed_html.find('span', class_='item_sleeve_condition').text
     return album_info
 
+def get_album_info_as_string(album_info):
+    info = ""
+    for k,v in album_info.items():
+        info += k + ": " + str(v) + ", "
+    info += '\n\n'
+    return info
+
 if __name__ == '__main__':
     ids = get_ids()
-    deals = []
+    deals = ""
     for album_id in ids:
         listing = get_cheapest_listings(album_id)
         album_info = get_album_info(listing)
         price_as_float = float(album_info['price'][1:])
         if price_as_float < 25:
-            deals.append(album_info)
+            deals += get_album_info_as_string(album_info)
     
     send_notification(deals)
