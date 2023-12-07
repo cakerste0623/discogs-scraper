@@ -44,9 +44,12 @@ def get_album_info(html):
 
 if __name__ == '__main__':
     ids = get_ids()
+    deals = []
     for album_id in ids:
         listing = get_cheapest_listings(album_id)
         album_info = get_album_info(listing)
         price_as_float = float(album_info['price'][1:])
-        if price_as_float < 30:
-            send_notification(album_info)
+        if price_as_float < 25:
+            deals.append(album_info)
+    
+    send_notification(deals)
