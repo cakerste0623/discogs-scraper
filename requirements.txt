@@ -1,3 +1,4 @@
 requests
 json
 bs4
+boto3

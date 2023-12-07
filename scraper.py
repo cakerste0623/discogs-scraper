@@ -1,9 +1,12 @@
 import requests
 import json
 from bs4 import BeautifulSoup
+import boto3
 
 discogs_username = "cakerste"
 conditions = ['Mint (M)', 'Near Mint (NM or M-)']
+sns = boto3.client('sns', region_name='us-east-1')
+topic_name = 'arn:aws:sns:us-east-1:196301278959:deals'
 
 def get_ids():
     ids = []
@@ -22,7 +25,8 @@ def get_cheapest_listings(id):
     return page.text
 
 def send_notification(album_info):
-    print(album_info)
+    print("sending..." + str(album_info))
+    sns.publish(TopicArn=topic_name, Message=str(album_info))
 
 def find_condition(html):
     for condition in conditions:
