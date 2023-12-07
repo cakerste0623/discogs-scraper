@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 import boto3
 
 discogs_username = "cakerste"
-conditions = ['Mint (M)', 'Near Mint (NM or M-)']
+conditions = ['Mint (M)', 'Near Mint (NM or M-)', 'Very Good Plus (VG+)', 'Very Good (VG)', 'Good (G)', 'Good Plus (G+)', 'Poor (P)', 'Fair (F)']
 sns = boto3.client('sns', region_name='us-east-1')
 topic_name = 'arn:aws:sns:us-east-1:196301278959:deals'
 
